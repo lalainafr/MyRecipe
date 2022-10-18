@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}MyRecipe - Modification de la recette{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1>Creation de la recette</h1>
+        <br>
+        {{ form_start(form) }}
+        {{ form_row(form.name)}}
+        {{ form_row(form.time)}}
+        {{ form_row(form.nbPeople)}}
+        {{ form_row(form.difficulty)}}
+        {{ form_row(form.description)}}
+        {{ form_row(form.price)}}
+        {{ form_row(form.isFavorite)}}
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

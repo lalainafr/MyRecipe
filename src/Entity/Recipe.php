@@ -2,11 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\RecipeRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\RecipeRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -60,10 +61,15 @@ class Recipe
     #[ORM\ManyToMany(targetEntity: Ingredient::class, inversedBy: 'recipes')]
     private Collection $ingredient;
 
+    public function __toString()
+    {
+        return $this->getName();
+    }
+
     public function __construct()
     {
         $this->ingredient = new ArrayCollection();
-        $this->createdAt = new \DateTimeImmutable();
+        $this->createdAt = new DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -90,7 +96,7 @@ class Recipe
 
     public function setTime(?int $time): self
     {
-        $this->time = $time;
+        $this->time = $this->transformToMinute($time);
 
         return $this;
     }
@@ -201,5 +207,10 @@ class Recipe
         $this->ingredient->removeElement($ingredient);
 
         return $this;
+    }
+
+    public function transformToMinute(int $number): int
+    {
+        return ($number / 60) . ' mn';
     }
 }

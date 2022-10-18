@@ -41,7 +41,7 @@ class AppFixtures extends Fixture
         $recipes = [];
         for ($i=0; $i < 30; $i++) { 
             $recipe = new Recipe();
-                $recipe->setName('recipe_' . $this->faker->word())
+                $recipe->setName('recette_' . strtoupper($this->faker->word()))
                 ->setTime(mt_rand(0,1) == 1 ? mt_rand(1, 1440): null)
                 ->setNbPeople(mt_rand(0,1) == 1 ? mt_rand(1, 50): null)
                 ->setDifficulty(mt_rand(0,1) == 1 ? mt_rand(1, 5): null)
