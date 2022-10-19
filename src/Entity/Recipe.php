@@ -96,7 +96,7 @@ class Recipe
 
     public function setTime(?int $time): self
     {
-        $this->time = $this->transformToMinute($time);
+        $this->time = $time;
 
         return $this;
     }
@@ -207,10 +207,5 @@ class Recipe
         $this->ingredient->removeElement($ingredient);
 
         return $this;
-    }
-
-    public function transformToMinute(int $number): int
-    {
-        return ($number / 60) . ' mn';
     }
 }
