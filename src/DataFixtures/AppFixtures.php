@@ -56,6 +56,7 @@ class AppFixtures extends Fixture
             // Utiliser FAKER pour le nom de l'ingredient
             $ingredient->setName('ingredient_'. strtoupper($this->faker->word()))
             ->setPrice(mt_rand(0, 100))
+            // relier l'ingredient à un utilisateur
             ->setUser($users[mt_rand(0, count($users) - 1)]);
             $ingredients[] = $ingredient;
             $manager->persist($ingredient);
@@ -71,7 +72,9 @@ class AppFixtures extends Fixture
                 ->setDifficulty(mt_rand(0,1) == 1 ? mt_rand(1, 5): null)
                 ->setDescription($this->faker->sentence())
                 ->setPrice(mt_rand(0,1) == 1 ? mt_rand(1, 1000): null)
-                ->setIsFavorite(mt_rand(0,1) == 1 ? true : false);
+                ->setIsFavorite(mt_rand(0,1) == 1 ? true : false)
+                // relier l'ingredient à un utilisateur
+                ->setUser($users[mt_rand(0, count($users) - 1)]);
                 // On rajoute entre 5 et 15 ingredients pour chaque recette
                 for ($k=0; $k < (mt_rand(5,15)); $k++) { 
                     $recipe->addIngredient($ingredients[mt_rand(1, count($ingredients) - 1)]);
