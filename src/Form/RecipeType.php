@@ -4,15 +4,25 @@ namespace App\Form;
 
 use App\Entity\Recipe;
 use App\Entity\Ingredient;
+use App\Repository\IngredientRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class RecipeType extends AbstractType
 {
+    
+    private $token;
+
+    public function __construct(TokenStorageInterface $token)
+    {
+    $this->token = $token;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -26,6 +36,14 @@ class RecipeType extends AbstractType
             ->add('ingredient', EntityType::class, [
                 'choice_label' => 'name',
                 'class' => Ingredient::class,
+                // DQL sur le repo Ingredient
+                'query_builder' => function(IngredientRepository $r) {
+                    return $r->createQueryBuilder('i')
+                        ->where('i.user = :user')
+                        // l'utilisateur connecté 
+                        ->setParameter('user', $this->token->getToken()->getUser() )
+                        ->orderBy('i.name' , 'ASC');
+                },
                 'multiple' => true,
                 'expanded' => true,
             ])
