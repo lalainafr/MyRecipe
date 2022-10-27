@@ -41,6 +41,10 @@ class Ingredient
     #[ORM\ManyToMany(targetEntity: Recipe::class, mappedBy: 'ingredient')]
     private Collection $recipes;
 
+    #[ORM\ManyToOne(inversedBy: 'ingredients')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
     /**
      * Constructor
      */
@@ -113,6 +117,18 @@ class Ingredient
         if ($this->recipes->removeElement($recipe)) {
             $recipe->removeIngredient($this);
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

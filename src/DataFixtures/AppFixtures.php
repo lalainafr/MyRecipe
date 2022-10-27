@@ -30,6 +30,24 @@ class AppFixtures extends Fixture
     // Mettre en place les FIXTURES
     public function load(ObjectManager $manager): void
     {
+
+         // User
+        $users = [];    
+        for ($i=0; $i < 10 ; $i++) { 
+            
+            $user = new User();
+            $user->setFullName($this->faker->name())
+            ->setPseudo($this->faker->firstName())
+            ->setEmail($this->faker->email())
+            ->setRoles(['ROLE_USER']);
+            
+            $hashPassword = $this->hasher->hashPassword($user, 'password');
+            $user->setPassword($hashPassword);
+
+            $users[] = $user;
+            $manager->persist($user);
+        }
+
         // Ingredient
         // Mettre dans un tableau la liste des ingredients
         $ingredients = [];
@@ -37,7 +55,8 @@ class AppFixtures extends Fixture
             $ingredient = new Ingredient();
             // Utiliser FAKER pour le nom de l'ingredient
             $ingredient->setName('ingredient_'. strtoupper($this->faker->word()))
-            ->setPrice(mt_rand(0, 100));
+            ->setPrice(mt_rand(0, 100))
+            ->setUser($users[mt_rand(0, count($users) - 1)]);
             $ingredients[] = $ingredient;
             $manager->persist($ingredient);
         }
@@ -61,20 +80,7 @@ class AppFixtures extends Fixture
                 $manager->persist($recipe);
         }
 
-        // User
-        
-        for ($i=0; $i < 10 ; $i++) { 
-            
-            $user = new User();
-            $user->setFullName($this->faker->name())
-            ->setPseudo($this->faker->firstName())
-            ->setEmail($this->faker->email())
-            ->setRoles(['ROLE_USER']);
-            
-            $hashPassword = $this->hasher->hashPassword($user, 'password');
-            $user->setPassword($hashPassword);
-            $manager->persist($user);
-        }
+       
 
         $manager->flush();
     }
