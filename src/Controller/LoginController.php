@@ -32,15 +32,14 @@ class LoginController extends AbstractController
     public function registration(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface  $hasher): Response
     {
         $user = new User;
+        $user->setRoles(['ROLE_USER']);
         $form = $this->createForm(RegistrationType::class, $user);
         $form->handleRequest($request);
-        
      
         if ($form->isSubmitted() && $form->isValid()){
             $plain_pwd = $form->getData()->getPlainPassword();
             $hash = $hasher->hashPassword($user, $plain_pwd);
             $form->getData()->setpassword($hash);
-            $form->getData()->setRoles(['ROLE_USER']);
            
             $em->persist($form->getData());
             $em->flush();
