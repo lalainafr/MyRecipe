@@ -9,31 +9,23 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserController extends AbstractController
 {
+    #[Security("is_granted('ROLE_USER') and user === choosenUser ")]
     #[Route('/utilisateur/edition/{id}', name: 'app_user_edit')]
-    public function editProfile(User $user, Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $hasher): Response
+    public function editProfile(User $choosenUser, Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $hasher): Response
     {
-        // Si l'utisateur n'est pas connecté, le renvoyer vers la page de connexion
-        if(!$this->getUser()){
-            return $this->redirectToRoute('app_login');
-        }
-        
-        // Si l'utisateur connecté, le renvoyer vers la page de connexion
-        if($this->getUser() !== $user){
-            return $this->redirectToRoute('app_login');
-        }
-
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(UserType::class, $choosenUser);
         
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
 
             // Verifier si le mot de passe tapé correspond à plainPassword en bdd
-            if($hasher->isPasswordValid($user, $form->getData()->getPlainPassword())){
+            if($hasher->isPasswordValid($choosenUser, $form->getData()->getPlainPassword())){
                 $user = $form->getData();
                 $em->persist($user);
                 $em->flush();
@@ -56,11 +48,12 @@ class UserController extends AbstractController
         ]);
     }
 
+    #[Security("is_granted('ROLE_USER') and user === choosenUser ")]
     #[Route('/utilisateur/edition-mot-de-passe/{id}', name: 'app_user_edit_password')]
-    public function editUserPasssword(User $user, Request $request, UserPasswordHasherInterface $hasher, EntityManagerInterface $em): Response
+    public function editUserPasssword(User $choosenUser, Request $request, UserPasswordHasherInterface $hasher, EntityManagerInterface $em): Response
     {      
             // Si l'utisateur connecté, le renvoyer vers la page de connexion
-            if($this->getUser() !== $user){
+            if($this->getUser() !== $choosenUser){
                 return $this->redirectToRoute('app_login');
             }
 
@@ -71,16 +64,16 @@ class UserController extends AbstractController
             
             // Verifier si le mot de passe tapé correspond à plainPassword en bdd
             // dd($user, $form->getData()['plainPassword'], $form->getData()['newPassword']);
-            if($hasher->isPasswordValid($user, $form->getData()['plainPassword'])){
+            if($hasher->isPasswordValid($choosenUser, $form->getData()['plainPassword'])){
                 $user->setPassword(
                     $hasher->hashPassword(
-                        $user,
+                        $choosenUser,
                         $form->getData()['newPassword']
                         )
                     );        
                 $user->setPassword(
                     $hasher->hashPassword(
-                        $user,
+                        $choosenUser,
                         $form->getData()['newPassword']
                         )
                     );        
