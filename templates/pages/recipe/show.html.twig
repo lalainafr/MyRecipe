@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}MyRecipe - Detail d'une recette {% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+
+{% for message in app.flashes('success') %}
+      <div class="alert alert-success">
+          {{ message }}
+      </div>
+{% endfor %}
+
+<h1> Recette N° {{recipe.id}}</h1>
+<h4>{{recipe.name}}</h4>
+<span class="badge bg-primary">{{recipe.createdAt | date("d/m/Y")}}</span>
+
+<div class="mt-4">
+  <p>Temp de cuisson: 
+    {% if(recipe.time)%}
+      {{recipe.time}}
+    {% else %}  
+      Non renseigné
+    {% endif %}  
+  </p>
+</div>
+<div class="mt-4">
+  <p>Difficulté: 
+    {% if(recipe.difficulty)%}
+      {{recipe.difficulty}}
+    {% else %}  
+      Non renseigné
+    {% endif %}  
+  </p>
+</div>
+<div class="mt-4">
+  <p>Nombre de personne: 
+    {% if(recipe.nbPeople)%}
+      {{recipe.nbPeople}}
+    {% else %}  
+      Non renseigné
+    {% endif %}  
+  </p>
+</div>
+<div class="mt-4">
+  <p>Description: {{recipe.description}}
+  </p>
+</div>
+
+ <div class="mt-4">
+  <p>Ingredients: 
+    {% for ingredient in recipe.getIngredient() %}
+          <span class="badge bg-primary">{{ingredient.name}}</span>
+    {% endfor %}
+  </p>
+</div>
+
+
+
+{% endblock %}

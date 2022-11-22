@@ -17,19 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class RecipeController extends AbstractController
 {
-    #[IsGranted('ROLE_USER')]
-    #[Route('/recette', name: 'app_recipe_index', methods:['GET'])]
-    public function index(RecipeRepository $repo, PaginatorInterface $paginator, Request $request): Response
-    {
-        $recipes = $paginator->paginate(
-            $repo->findBy(['user' => $this->getUser()]), // query
-            $request->query->getInt('page', 1), // numéro de la page
-            10 // limite par page
-        );
-        return $this->render('pages/recipe/index.html.twig', [
-            'recipes' => $recipes
-        ]);
-    }
+    
     
     #[IsGranted('ROLE_USER')]
     #[Route('/recette/nouveau', name: 'app_recipe_new', methods:['GET', 'POST'])]
@@ -57,7 +45,48 @@ class RecipeController extends AbstractController
        ]);
     }
 
-    #[Security("is_granted('ROLE_USER' and user === recipe.user)")]
+    #[Route('/recette/public', name: 'app_recipe_indexPublic', methods:['GET'])]
+    public function indexPublic(RecipeRepository $repo, PaginatorInterface $paginator, Request $request): Response
+    {
+        $recipes = $paginator->paginate(
+            $repo->findPublicRecipe(null), // query
+            $request->query->getInt('page', 1), // numéro de la page
+            10 // limite par page
+        );
+        return $this->render('pages/recipe/indexPublic.html.twig', [
+            'recipes' => $recipes,
+        ]);
+    }
+
+    // Acces autorisé aux utilisateur connectés, recette publique ou l'utilisateur a qui appartient la recette
+    #[Security("is_granted('ROLE_USER') and recipe.isIsPublic() === true || user === recipe.getUser()")]
+    #[Route('/recette/{id}', name: 'app_recipe_show', methods:['GET'])]
+    public function show(Recipe $recipe): Response
+    {
+       return $this->render('pages/recipe/show.html.twig', [
+            'recipe' => $recipe,
+       ]);    
+    }
+
+ 
+
+    #[IsGranted('ROLE_USER')]
+    #[Route('/recette', name: 'app_recipe_index', methods:['GET'])]
+    public function index(RecipeRepository $repo, PaginatorInterface $paginator, Request $request): Response
+    {
+        $recipes = $paginator->paginate(
+            $repo->findBy(['user' => $this->getUser()]), // query
+            $request->query->getInt('page', 1), // numéro de la page
+            10 // limite par page
+        );
+        return $this->render('pages/recipe/index.html.twig', [
+            'recipes' => $recipes
+        ]);
+    }
+    
+   
+
+    #[Security("is_granted('ROLE_USER') and user === recipe.getUser()")]
     #[Route('/recette/edition/{id}', name: 'app_recipe_edit', methods:['GET', 'POST'])]
     public function edit(Recipe $recipe, EntityManagerInterface $em, Request $request): Response
     {
@@ -81,6 +110,8 @@ class RecipeController extends AbstractController
             'form' => $form->createView(),
        ]);
     }
+
+
 
     #[Route('/recette/suppression/{id}', name: 'app_recipe_delete', methods:['GET'])]
     public function delete(Recipe $recipe, EntityManagerInterface $em, Request $request): Response

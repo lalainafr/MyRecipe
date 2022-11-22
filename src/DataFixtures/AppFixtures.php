@@ -73,6 +73,7 @@ class AppFixtures extends Fixture
                 ->setDescription($this->faker->sentence())
                 ->setPrice(mt_rand(0,1) == 1 ? mt_rand(1, 1000): null)
                 ->setIsFavorite(mt_rand(0,1) == 1 ? true : false)
+                ->setIsPublic(mt_rand(0,1) == 1 ? true : false)
                 // relier l'ingredient à un utilisateur
                 ->setUser($users[mt_rand(0, count($users) - 1)]);
                 // On rajoute entre 5 et 15 ingredients pour chaque recette
