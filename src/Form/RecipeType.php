@@ -7,6 +7,7 @@ use App\Entity\Ingredient;
 use App\Repository\IngredientRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -33,6 +34,9 @@ class RecipeType extends AbstractType
             ->add('description')
             ->add('price')
             ->add('isFavorite')
+            ->add('imageFile', VichImageType::class, [
+                'label' => 'Image de la recette'
+            ])
             ->add('ingredient', EntityType::class, [
                 'choice_label' => 'name',
                 'class' => Ingredient::class,

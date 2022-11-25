@@ -18,6 +18,9 @@
 
 <h1> Recette N° {{recipe.id}}</h1>
 <h4>{{recipe.name}}</h4>
+<div>
+  <img src="{{vich_uploader_asset(recipe, 'imageFile')}}">
+</div>
 <span class="badge bg-primary">{{recipe.createdAt | date("d/m/Y")}}</span>
 <p>La moyenne de cette recette est de 
     {% if recipe.average %}
