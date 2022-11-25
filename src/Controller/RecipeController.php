@@ -48,7 +48,7 @@ class RecipeController extends AbstractController
        ]);
     }
 
-    #[Route('/recette/public', name: 'app_recipe_indexPublic', methods:['GET'])]
+    #[Route('/recette/community', name: 'app_recipe_community', methods:['GET'])]
     public function indexPublic(RecipeRepository $repo, PaginatorInterface $paginator, Request $request): Response
     {
         $recipes = $paginator->paginate(
@@ -145,7 +145,7 @@ class RecipeController extends AbstractController
     }
 
 
-
+    #[Security("is_granted('ROLE_USER') and user === recipe.getUser()")]
     #[Route('/recette/suppression/{id}', name: 'app_recipe_delete', methods:['GET'])]
     public function delete(Recipe $recipe, EntityManagerInterface $em, Request $request): Response
     {

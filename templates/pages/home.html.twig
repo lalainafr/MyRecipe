@@ -20,7 +20,11 @@
   <div class="d-flex justify-content-between flex-wrap mr-3">
     {% for recipe in recipes %}
       <div class="card text-white bg-secondary mb-3" style="max-width: 20rem;">
-      <div class="card-header">Recette n° {{recipe.id}}</div>
+      <div class="card-header">
+      <a href="{{path ('app_recipe_show', {id: recipe.id } )}}">
+      Recette n° {{recipe.id}}
+      </a>  
+      </div>
       <div class="card-body">
         <h4 class="card-title">{{recipe.name}}</h4>
         <p class="card-text">{{recipe.description}}</p>

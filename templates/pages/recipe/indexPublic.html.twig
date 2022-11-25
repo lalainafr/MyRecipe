@@ -43,7 +43,9 @@
     {% for recipe in recipes %}
     <tr class="table-default">   
       <th scope="row">{{recipe.id}}</th>
-      <td>{{recipe.name}}</td>
+      <td> <a href="{{path('app_recipe_show', {id: recipe.id})}}">{{recipe.name}}</a>
+      
+      </td>
       <td>{{recipe.time}}</td>
       <td>{{recipe.nbPeople}}</td>
       <td>{{recipe.difficulty}}</td>

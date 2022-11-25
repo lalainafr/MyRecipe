@@ -73,21 +73,22 @@ class IngredientController extends AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
             $em->flush();
-
+            
             $this->addFlash(
                 'success',
                 'Votre ingredient a été modifié avec succès !'
             );
             return $this->redirectToRoute('app_ingredient_index');
         }
-
+        
         return $this->render('pages/ingredient/edit.html.twig', [
             'form' => $form->createView(),
         ]);
-
+        
     }
-
-
+    
+    
+    #[Security("is_granted('ROLE_USER') and user === ingredient.getUser()")]
     #[Route('/ingredient/suppression/{id}', name:'app_ingredient_delete', methods:['GET'])]
     public function delete(IngredientRepository $repo, int $id, EntityManagerInterface $em, Ingredient $ingredient) : Response
     {

@@ -7,19 +7,24 @@
     <div class="collapse navbar-collapse" id="navbarColor01">
       <ul class="navbar-nav me-auto">
         <li class="nav-item">
-          <a class="nav-link active" href="{{ path('app_home_index')}}">Home
+          <a class="nav-link active" href="{{ path('app_home_index')}}">Accueil
+            <span class="visually-hidden">(current)</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{path('app_recipe_community')}}">Recettes de la communaute
             <span class="visually-hidden">(current)</span>
           </a>
         </li>
         {# si l'utilisateur est connecté #}
          {% if app.user %}
         <li class="nav-item">
-          <a class="nav-link" href="{{path('app_ingredient_index')}}">Ingredient
+          <a class="nav-link" href="{{path('app_ingredient_index')}}">Mes ingredients
             <span class="visually-hidden">(current)</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{{path('app_recipe_index')}}">Recette
+          <a class="nav-link" href="{{path('app_recipe_index')}}">Mes recettes
             <span class="visually-hidden">(current)</span>
           </a>
         </li>

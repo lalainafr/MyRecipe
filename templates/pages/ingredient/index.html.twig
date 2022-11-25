@@ -5,6 +5,9 @@
 {% block body %}
 <div class="container mt-4">
 
+<h1>Mes Ingredients</h1>
+<br>
+<a href="{{ path('app_ingredient_new')}}">Créer un ingredient</a>
 
 {% for message in app.flashes('success') %}
       <div class="alert alert-success">
@@ -12,16 +15,11 @@
       </div>
 {% endfor %}
 
-{# Gerer le cas s'il n'y a pas d'ingredient #}
-{% if ingredients.getTotalItemCount > 0 %}
 
-<h1>Mes Ingredients</h1>
-<br>
-<a href="{{ path('app_ingredient_new')}}">Créer un ingredient</a>
 
 {# total items count #}
 <div class="count">
-<p>Il y a {{ ingredients.getTotalItemCount }} ingrédient au total </p>
+<p>Il y a {{ ingredients.getTotalItemCount }} ingrédient(s) au total </p>
 </div>
 
 <table class="table table-hover table-striped">
@@ -60,9 +58,6 @@
     {{ knp_pagination_render(ingredients) }}
 </div>
 
-{% else %}
-<p>Il n'y a pas d'ingredient disponible </p>
 </div>
-{% endif %}
 
 {% endblock %}
