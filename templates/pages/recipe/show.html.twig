@@ -24,7 +24,7 @@
 <span class="badge bg-primary">{{recipe.createdAt | date("d/m/Y")}}</span>
 <p>La moyenne de cette recette est de 
     {% if recipe.average %}
-      {{recipe.average}} 
+      {{recipe.average | number_format(2,'.', ',') }} 
     {% else %}
         0 
     {% endif %}

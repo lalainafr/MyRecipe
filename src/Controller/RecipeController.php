@@ -20,8 +20,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class RecipeController extends AbstractController
 {
-    
-    
     #[IsGranted('ROLE_USER')]
     #[Route('/recette/nouveau', name: 'app_recipe_new', methods:['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $em): Response
@@ -101,8 +99,6 @@ class RecipeController extends AbstractController
         ]);    
     }
 
- 
-
     #[IsGranted('ROLE_USER')]
     #[Route('/recette', name: 'app_recipe_index', methods:['GET'])]
     public function index(RecipeRepository $repo, PaginatorInterface $paginator, Request $request): Response
@@ -117,20 +113,16 @@ class RecipeController extends AbstractController
         ]);
     }
     
-   
-
     #[Security("is_granted('ROLE_USER') and user === recipe.getUser()")]
     #[Route('/recette/edition/{id}', name: 'app_recipe_edit', methods:['GET', 'POST'])]
     public function edit(Recipe $recipe, EntityManagerInterface $em, Request $request): Response
     {
-
        $form = $this->createForm(RecipeType::class, $recipe);
        $form->handleRequest($request);
        if($form->isSubmitted() && $form->isValid()){
             $recipe->setUpdateAt(new DateTimeImmutable);
             $recipe = $form->getData();
             $em->flush();
-
 
             $this->addFlash(
                 'success',
@@ -144,14 +136,12 @@ class RecipeController extends AbstractController
        ]);
     }
 
-
     #[Security("is_granted('ROLE_USER') and user === recipe.getUser()")]
     #[Route('/recette/suppression/{id}', name: 'app_recipe_delete', methods:['GET'])]
     public function delete(Recipe $recipe, EntityManagerInterface $em, Request $request): Response
     {
         $em->remove($recipe);
         $em->flush();
-
 
         $this->addFlash(
             'success',

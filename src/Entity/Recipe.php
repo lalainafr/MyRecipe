@@ -35,7 +35,7 @@ class Recipe
     #[Vich\UploadableField(mapping: 'recipe_images', fileNameProperty: 'imageName')]
     private ?File $imageFile = null;
 
-    #[ORM\Column(type: 'string')]
+    #[ORM\Column(nullable: true)]
     private ?string $imageName = null;
 
     private ?float $average = null;

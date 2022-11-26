@@ -39,7 +39,7 @@
     <tr class="table-default">   
       <th scope="row">{{ingredient.id}}</th>
       <td>{{ingredient.name}}</td>
-      <td>{{ingredient.price |number_format(2, '.', ',')}}</td>
+      <td>{{ingredient.price |number_format(2, '.', ',')}} €</td>
       <td>{{ingredient.createdAt|date("d/m/Y")}}</td>
       <td>
           <a href="{{path('app_ingredient_edit', {id: ingredient.id})}}" class="btn btn-info">Modifier</a>
@@ -52,7 +52,7 @@
     {% endfor %}
   </tbody>
 </table>
-
+`
 {# display navigation #}
 <div class="navigation d-flex justify-content-center mt-4">
     {{ knp_pagination_render(ingredients) }}

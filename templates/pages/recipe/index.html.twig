@@ -5,6 +5,10 @@
 {% block body %}
 <div class="container mt-4">
 
+<h1>Mes Recettes</h1>
+<br>
+<a href="{{ path('app_recipe_new')}}">Créer une recette</a>
+
 {% for message in app.flashes('success') %}
       <div class="alert alert-success">
           {{ message }}
