@@ -4,11 +4,13 @@
 
 {% block body %}
     <div class="container mt-4">
-        <h1>Formulaire d'inscription</h1>
+    <div class="row d-flex justify-content-center">
+    <div class="col-md-6 mt-4">
+        <h1 class="text-center">Formulaire d'inscription</h1>
         <br>
-
-        {{form_start(form)}}
-        {{form_widget(form)}}
-        {{form_end(form)}}
-    
+            {{form_start(form)}}
+            {{form_widget(form)}}
+            {{form_end(form)}}
+      </div>
+     </div>
 {% endblock %}

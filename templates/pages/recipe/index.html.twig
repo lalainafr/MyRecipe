@@ -18,10 +18,6 @@
  {# Gerer le cas s'il n'y a pas d'ingredient #}
  {% if recipes.getTotalItemCount > 0 %}
 
-<h1>Mes Recettes</h1>
-<br>
-<a href="{{ path('app_recipe_new')}}">Créer une recette</a>
-
 {# total items count #}
 <div class="count">
 <p>Il y a {{ recipes.getTotalItemCount }} recettes au total </p>

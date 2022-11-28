@@ -4,7 +4,10 @@
 
 {% block body %}
     <div class="container mt-4">
-        <h1>Creation d'un ingredient</h1>
+
+    <div class="row d-flex justify-content-center">
+    <div class="col-md-6 mt-4">
+        <h1 class="text-center">Creation d'un ingredient</h1>
         {{ form_start(form) }}
         
         <div class="form-group">
@@ -23,5 +26,7 @@
             </div>        
         </div>
         {{ form_end(form) }}
+    </div>    
+    </div>
     </div>
 {% endblock %}
